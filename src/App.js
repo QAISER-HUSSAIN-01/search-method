@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useState } from "react";
+import useSearch from "./search";
 function App() {
+
+  const [text,setText] = useState('');
+  const [findData,setFindData] = useState('');
+  const [search,error,status] = useSearch(findData);
+
+  const handleSearch = ()=>{
+   setFindData(text.toLowerCase());
+   setText('');
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input value={text} onChange={(e)=>setText(e.target.value)} />
+      <button onClick={handleSearch}>Seacrh</button>
+
+      <div>
+        {search[0] ? 
+        search.map(item=>(<h4>{item.name}</h4>)):
+        error ? <h4>{error}</h4> : <h4>no search yet</h4>
+        }
+      </div>
     </div>
   );
 }
